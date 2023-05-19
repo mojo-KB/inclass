@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+body {
+    background-color: #0B1120;
+}
+
+@layer components {
+    .primaryBtn {
+        @apply text-[#0B1120] bg-lime-400 text-2xl font-bold p-5 rounded-full shadow-lg hover:opacity-90
+    }
+    .secondaryBtn {
+        @apply text-lime-400 bg-gray-800 text-2xl font-bold p-5 rounded-full shadow-lg hover:opacity-90
+    }
+
+    .secondaryBtn2 {
+        @apply text-lime-400 bg-gray-800 text-xl font-semibold p-2 px-5 rounded-xl shadow-lg hover:opacity-90 
+    }
+
+    .primaryBtn2 {
+        @apply text-[#0B1120] bg-lime-400 text-xl font-semibold p-2 px-5 rounded-xl shadow-lg hover:opacity-90
+    }
+}
