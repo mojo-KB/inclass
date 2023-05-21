@@ -17,7 +17,7 @@ function Nav({ }: Props) {
                 >inClass?</button>
 
                 <div className='px-5 text-white flex space-x-10 items-center'>
-                    <button className='text-lime-400'>Explore all sessions</button>
+                    <button className='text-lime-400' onClick={() => router.push('/session')}>Explore all sessions</button>
 
 
                     <div className='flex items-center space-x-2'>
