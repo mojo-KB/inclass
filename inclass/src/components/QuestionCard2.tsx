@@ -104,7 +104,7 @@ function QuestionCard2({ content, signalTime, selectedClass }: Props) {
 
 
 
-                {clockQuestion > 0 ? <div className='font-bold text-red-500'>{hours + ":" + minutes + ":" + seconds}</div> : <div className='font-bold text-red-500'>After Class question</div>}
+                {clockQuestion > 0 ? <div className='font-bold text-red-500'>{hours + ":" + minutes + ":" + seconds}</div> : <div className='font-bold text-lime-500'>After Class question</div>}
 
             </div>
 
