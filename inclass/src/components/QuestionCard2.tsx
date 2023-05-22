@@ -7,7 +7,7 @@ type Props = {
 function QuestionCard2({ content, signalTime }: Props) {
     const [showReply, setShowReply] = React.useState(false)
     const handleClick = () => {
-
+        setShowReply(!showReply)
     }
     return (
         <div className='m-1'>
@@ -21,7 +21,7 @@ function QuestionCard2({ content, signalTime }: Props) {
                 <div className='font-bold text-red-500'>{signalTime}</div>
             </div>
 
-            <div className='hidden inline-block'>
+            <div className={!showReply ? 'hidden min-w-full' : 'inline-block min-w-full'}>
                 <div className='text-white m-1 mx-20 p-3 rounded-lg shadow-sm flex items-center justify-between'>
                     <input type="text" className='flex-1 bg-transparent border-gray-700 border-2 text-white rounded-full p-1 px-3' />
                     <button className='secondaryBtn2 font-normal text-sm ml-3'>Reply</button>
