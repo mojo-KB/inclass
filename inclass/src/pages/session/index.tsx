@@ -135,15 +135,7 @@ const Content: React.FC = () => {
     })
 
 
-    const handleClick = () => {
-        createQuestion.mutate({
-            classId: selectedClass?.id || "",
-            content: question,
-            signalTime: new Date().toISOString(),
-        })
-        console.log("CLICK")
-        setQuestion("");
-    }
+
 
     const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
@@ -169,15 +161,28 @@ const Content: React.FC = () => {
         clock = remainingTimeInMillis;
     }
 
+    const handleClick = () => {
+        createQuestion.mutate({
+            clock: clock,
+            classId: selectedClass?.id || "",
+            content: question,
+            signalTime: new Date().toISOString(),
+        })
+        console.log("CLICK")
+        setQuestion("");
+    }
+
     return (
         <div>
             <Nav />
             <div className='flex flex-col max-w-5xl items-center justify-center mx-auto  gap-4 pt-10'>
 
-                <div className='text-white min-w-full font-bold text-3xl px-10 flex justify-between'>
-                    <div className='italic text-lg'>
-                        <div className=''>Title: <span className='font-bold'>{selectedClass?.title}</span></div>
-                        <div>Student: <span>{selectedClass?.capasity}</span></div>
+                <div className='text-white min-w-full text-3xl px-10 flex justify-between'>
+                    <div className=' text-lg'>
+                        <div className='text-gray-200 italic'>Title: <span className='font-bold  text-white'>{selectedClass?.title}</span></div>
+                        <div className='text-gray-200 italic'> Student: <span className='font-bold text-white'>{selectedClass?.capasity}</span></div>
+                        <div className='text-gray-200 italic'>Duration: <span className='text-red-500 font-bold'> {selectedClass?.duration + ":00:00"}</span>
+                        </div>
                     </div>
 
 
@@ -196,8 +201,7 @@ const Content: React.FC = () => {
                         {
                             questions?.map((question) => (
                                 <QuestionCard2 key={question.id} content={question.content} signalTime={question.signalTime}
-                                    selectedClass={question}
-                                />
+                                    selectedClass={question} />
                             ))
                         }
                     </div>

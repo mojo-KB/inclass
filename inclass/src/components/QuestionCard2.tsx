@@ -7,7 +7,7 @@ import { type RouterOutputs, api } from '~/utils/api'
 type Props = {
     content: string,
     signalTime: string,
-    selectedClass: RouterOutputs["question"]["getAll"][0] | null
+    selectedClass: RouterOutputs["question"]["getAll"][0] | null,
 }
 type Question = RouterOutputs["question"]["getAll"][0];
 function QuestionCard2({ content, signalTime, selectedClass }: Props) {
@@ -75,18 +75,26 @@ function QuestionCard2({ content, signalTime, selectedClass }: Props) {
         setReply(event.currentTarget.value);
     }
 
-
-
+    const clockQuestion = selectedClass?.clock || 0;
+    const hours = Math.floor(clockQuestion);
+    const minutes = Math.floor((clockQuestion - hours) * 60);
+    const seconds = Math.floor((((clockQuestion - hours) * 60) - minutes) * 60);
     return (
         <div className='m-5'>
             <div className='min-w-full bg-gray-900 text-white p-5  rounded-lg flex items-center justify-between' onClick={handleClick} >
+                <div className='flex flex-col items-start justify-start'>
+                    <div className='flex items-center space-x-5'>
+                        <div className='text-xl font-bold'>Question: </div>
+                        <div className='text-white text-lg'><span>{content}</span>?</div>
+                    </div>
 
-                <div className='flex items-center space-x-5'>
-                    <div className='text-xl font-bold'>Question: </div>
-                    <div className='text-white text-lg'><span>{content}</span>?</div>
+                    <div className='font-extralight text-gray-500 italic text-sm'>{time}</div>
                 </div>
 
-                <div className='font-bold text-red-500'>{time}</div>
+
+
+                {clockQuestion > 0 ? <div className='font-bold text-red-500'>{hours + ":" + minutes + ":" + seconds}</div> : <div className='font-bold text-red-500'>After Class question</div>}
+
             </div>
 
             <div className={!showReply ? 'hidden min-w-full' : 'inline-block min-w-full'}>
