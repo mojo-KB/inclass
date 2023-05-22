@@ -179,7 +179,9 @@ const Content: React.FC = () => {
                     <div>
                         {
                             questions?.map((question) => (
-                                <QuestionCard2 key={question.id} content={question.content} signalTime={question.signalTime} />
+                                <QuestionCard2 key={question.id} content={question.content} signalTime={question.signalTime}
+                                    selectedClass={question}
+                                />
                             ))
                         }
                     </div>

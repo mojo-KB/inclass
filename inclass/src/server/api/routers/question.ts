@@ -20,6 +20,7 @@ export const questionRouter = createTRPCRouter({
             }
         })
     }), 
+    
     getAll: protectedProcedure
     .input(z.object({ classId: z.string()}))
     .query(({ ctx, input }) => {
