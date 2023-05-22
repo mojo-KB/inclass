@@ -9,10 +9,11 @@ import {
 export const questionRouter = createTRPCRouter({
   
     create: protectedProcedure
-    .input(z.object({ content: z.string(), signalTime: z.string(), classId: z.string() }))
+    .input(z.object({ content: z.string(), signalTime: z.string(), classId: z.string(), clock: z.number()}))
     .mutation( ({ ctx, input }) => {
         return ctx.prisma.question.create({
             data: {
+                clock: input.clock,
                 content: input.content,
                 signalTime: input.signalTime,
                 classId: input.classId,
