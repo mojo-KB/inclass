@@ -1,11 +1,15 @@
 import { QueriesObserver } from '@tanstack/react-query'
+import { create } from 'domain'
 import { on } from 'events'
 import { useSession } from 'next-auth/react'
+import router from 'next/router'
 import { mock } from 'node:test'
 import React, { useState } from 'react'
+import { set } from 'zod'
 import CountDownTimer from '~/components/CountDownTimer'
 import Nav from '~/components/Nav'
 import QuestionCard from '~/components/QuestionCard'
+import QuestionCard2 from '~/components/QuestionCard2'
 import { type RouterOutputs, api } from '~/utils/api'
 
 type Props = {}
@@ -87,17 +91,20 @@ export default index;
 type Class = RouterOutputs["class"]["getAll"][0];
 
 const Content: React.FC = () => {
+    const mockQuestion: any = [];
+
     const mockData = {
         title: "machine leaning class",
         studentInSesssion: 5,
         duration: 2
     }
-    const [whatToggle, setWhatToggle] = useState(true);
-    const [whereToggle, setWhereToggle] = useState(true);
-    const [whenToggle, setWhenToggle] = useState(true);
-    const [whoToggle, setWhoToggle] = useState(true);
-    const [howToggle, setHowToggle] = useState(true);
+    const [whatToggle, setWhatToggle] = useState(false);
+    const [whereToggle, setWhereToggle] = useState(false);
+    const [whenToggle, setWhenToggle] = useState(false);
+    const [whoToggle, setWhoToggle] = useState(false);
+    const [howToggle, setHowToggle] = useState(false);
 
+    const [question, setQuestion] = useState("");
 
     const { data: sessionData } = useSession();
 
@@ -121,13 +128,33 @@ const Content: React.FC = () => {
             enabled: sessionData?.user !== undefined && selectedClass !== null
         })
 
-    const createQustion = api.question.create.useMutation({
+    const createQuestion = api.question.create.useMutation({
         onSuccess: () => {
             void refetchQuestions()
         }
     })
 
 
+    const handleClick = () => {
+        createQuestion.mutate({
+            classId: selectedClass?.id || "",
+            content: question,
+            signalTime: new Date().toISOString(),
+        })
+        console.log("CLICK")
+        setQuestion("");
+    }
+
+    const handleQuestionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        e.preventDefault();
+        const questionSubfix = [];
+        if (whenToggle) questionSubfix.push("When");
+        if (whereToggle) questionSubfix.push("Where");
+        if (whoToggle) questionSubfix.push("Who");
+        if (howToggle) questionSubfix.push("How");
+        if (whatToggle) questionSubfix.push("What");
+        setQuestion(questionSubfix.join(" and ") + " " + e.currentTarget.value);
+    }
     return (
         <div>
             <Nav />
@@ -146,36 +173,47 @@ const Content: React.FC = () => {
                 </div>
 
                 <div className='min-w-full mt-20'>
-                    <QuestionCard />
-                    <QuestionCard />
+                    {/* <QuestionCard />
+                    <QuestionCard /> */}
+
+                    <div>
+                        {
+                            questions?.map((question) => (
+                                <QuestionCard2 key={question.id} content={question.content} signalTime={question.signalTime} />
+                            ))
+                        }
+                    </div>
+
                 </div>
 
 
-                <form action="" className=''>
+                <div>
                     <div className='space-x-2 flex'>
-                        <div className={whatToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setWhatToggle(!whatToggle)}>What</div>
+                        <div className={!whatToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setWhatToggle(!whatToggle)}>What</div>
 
 
-                        <div className={whereToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setWhereToggle(!whereToggle)} >Where</div>
+                        <div className={!whereToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setWhereToggle(!whereToggle)} >Where</div>
 
-                        <div className={whenToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setWhenToggle(!whenToggle)}>When</div>
+                        <div className={!whenToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setWhenToggle(!whenToggle)}>When</div>
 
-                        <div className={whoToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setWhoToggle(!whoToggle)}>Who</div>
+                        <div className={!whoToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setWhoToggle(!whoToggle)}>Who</div>
 
-                        <div className={howToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setHowToggle(!howToggle)}>How</div>
+                        <div className={!howToggle ? 'secondaryBtn2' : 'primaryBtn2'} onClick={() => setHowToggle(!howToggle)}>How</div>
                     </div>
-                    <input type="textarea" className='w-full p-2 pb-10 my-5 bg-gray-800 text-white rounded-lg' placeholder='Ask questions' />
+                    <input type="textarea" className='w-full p-2 pb-10 my-5 bg-gray-800 text-white rounded-lg' placeholder='Ask questions' onChange={handleQuestionChange} />
 
-                    <button className='primaryBtn rounded-lg text-lg p-2' >Submit</button>
-                </form>
+                    <button className='primaryBtn rounded-lg text-lg p-2' onClick={handleClick} >Submit</button>
+                </div>
             </div>
 
             <div className='flex flex-col max-w-5xl items-start justify-center mx-auto  gap-4 pt-10 text-white'>
-                <div className='text-3xl font-bold text-lime-500'>Other classes</div>
+                <div className='text-2xl font-bold text-lime-500'>Other classes</div>
                 {
                     classes?.map((c) => (
-                        <li key={c.id}>
+                        <li key={c.id} className='text-white list-none italic font-light'>
+
                             <a
+                                className='hover:text-lime-500'
                                 href="#"
                                 onClick={(event) => {
                                     event.preventDefault();
@@ -189,6 +227,7 @@ const Content: React.FC = () => {
                     ))
                 }
             </div>
+
 
         </div>
 
