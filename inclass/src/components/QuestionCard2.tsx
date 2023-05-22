@@ -11,6 +11,16 @@ type Props = {
 }
 type Question = RouterOutputs["question"]["getAll"][0];
 function QuestionCard2({ content, signalTime, selectedClass }: Props) {
+    // format the time
+    const time = new Date(signalTime).toLocaleTimeString([], {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    })
+
+
     const [showReply, setShowReply] = React.useState(false)
     const handleClick = () => {
         setShowReply(!showReply)
@@ -76,7 +86,7 @@ function QuestionCard2({ content, signalTime, selectedClass }: Props) {
                     <div className='text-white text-lg'><span>{content}</span>?</div>
                 </div>
 
-                <div className='font-bold text-red-500'>{signalTime}</div>
+                <div className='font-bold text-red-500'>{time}</div>
             </div>
 
             <div className={!showReply ? 'hidden min-w-full' : 'inline-block min-w-full'}>

@@ -155,6 +155,20 @@ const Content: React.FC = () => {
         if (whatToggle) questionSubfix.push("What");
         setQuestion(questionSubfix.join(" and ") + " " + e.currentTarget.value);
     }
+
+    // count down timer
+    const currentDate = new Date();
+    const durationDate = new Date(selectedClass?.createdAt || 0);
+    durationDate.setHours(durationDate.getHours() + (selectedClass?.duration || 0));
+
+    let clock = 0;
+    if (currentDate > durationDate) {
+        clock = 0
+    } else {
+        const remainingTimeInMillis = (durationDate.getHours() - currentDate.getHours()) + (durationDate.getMinutes() - currentDate.getMinutes()) / 60 + (durationDate.getSeconds() - currentDate.getSeconds()) / 3600;
+        clock = remainingTimeInMillis;
+    }
+
     return (
         <div>
             <Nav />
@@ -168,7 +182,9 @@ const Content: React.FC = () => {
 
 
                     <div className='text-lime-400'>
-                        <CountDownTimer hours={selectedClass?.duration || 0} />
+                        {/* <CountDownTimer hours={selectedClass?.duration || 0} /> */}
+                        {clock === 0 ? <div className='text-red-500'>Class Ended</div> : <CountDownTimer hours={clock} />}
+
                     </div>
                 </div>
 
