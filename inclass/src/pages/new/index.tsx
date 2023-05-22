@@ -42,7 +42,7 @@ function index({ }: Props) {
                     </div>
 
                     <div className='flex text-white justify-between items-center w-full '>
-                        <div className='font-bold text-2xl pr-5'>Capasity</div>
+                        <div className='font-bold text-2xl pr-5'>Capacity</div>
                         <input type="number" className='bg-gray-700 rounded-full p-3 text-white w-full basis-3/4' placeholder='Enter the limit of student' onChange={(e) => setCapasity(parseInt(e.currentTarget.value))} />
                     </div>
 
