@@ -21,6 +21,17 @@ function QuestionCard2({ content, signalTime, selectedClass }: Props) {
     })
 
 
+    const convertTime = (time: string | number | Date) => {
+        return new Date(time).toLocaleTimeString([], {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        })
+    }
+
+
     const [showReply, setShowReply] = React.useState(false)
     const handleClick = () => {
         setShowReply(!showReply)
@@ -108,7 +119,10 @@ function QuestionCard2({ content, signalTime, selectedClass }: Props) {
 
                 {replies?.map((reply) => (
                     <div className='mb-5'>
-                        <div className='text-white bg-gray-900 m-1 mx-20 p-3 rounded-lg shadow-sm'>{reply.content}</div>
+                        <div className='text-white bg-gray-900 m-1 mx-20 p-3 rounded-lg shadow-sm'>
+                            {reply.content}
+                            <div className='font-extralight text-gray-500 italic text-sm'>{convertTime(reply.createdAt)}</div>
+                        </div>
                     </div>
                 ))}
 
